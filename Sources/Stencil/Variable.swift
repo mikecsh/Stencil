@@ -111,7 +111,8 @@ public struct Variable: Equatable, Resolvable {
     } else if let string = context as? String {
       return resolve(bit: bit, collection: string)
     } else if let object = context as? NSObject {  // NSKeyValueCoding
-      #if os(Linux)
+      #if os(Linux) || os(Android)
+        // No Objective-C runtime / NSKeyValueCoding on Android or Linux.
         return nil
       #else
         if object.responds(to: Selector(bit)) {
